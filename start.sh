@@ -30,6 +30,14 @@ echo "==> Aplicando schema..."
 su postgres -c "psql -U postgres -d comerciantes -f /app/schema.sql"
 echo "==> Schema OK"
 
-# ── 5. Node en primer plano ───────────────────────────────────
+# ── 5. Insertar cliente demo si no existe ─────────────────────
+echo "==> Cargando datos demo..."
+su postgres -c "psql -U postgres -d comerciantes -c \
+  \"INSERT INTO clientes (nombre, pin) \
+    SELECT 'Almacen Demo', '1234' \
+    WHERE NOT EXISTS (SELECT 1 FROM clientes WHERE nombre = 'Almacen Demo');\"" || true
+echo "==> Demo listo: negocio='Almacen Demo' PIN=1234"
+
+# ── 6. Node en primer plano ───────────────────────────────────
 echo "==> Iniciando app en puerto $PORT..."
 exec node /app/server/index.js
