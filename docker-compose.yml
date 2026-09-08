@@ -1,0 +1,38 @@
+version: "3.9"
+
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: comerciantes-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: comerciantes
+      POSTGRES_PASSWORD: comerciantes
+      POSTGRES_DB: comerciantes
+    ports:
+      - "5432:5432"
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+      # El schema.sql se ejecuta automáticamente la primera vez
+      - ./schema.sql:/docker-entrypoint-initdb.d/01_schema.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U comerciantes"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  app:
+    build: .
+    container_name: comerciantes-app
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      NODE_ENV: production
+      DATABASE_URL: postgresql://comerciantes:comerciantes@db:5432/comerciantes
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  pg_data:
