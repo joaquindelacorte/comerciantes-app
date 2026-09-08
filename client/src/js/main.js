@@ -1,7 +1,5 @@
-// main.js — punto de entrada
+// main.js — entrada principal
 import '../css/main.css';
+import { renderLogin } from './auth.js';
 
-const app = document.getElementById('app');
-app.innerHTML = `<h1>Comerciantes App</h1><p>Cargando...</p>`;
-
-// TODO: inicializar router y módulos
+renderLogin();

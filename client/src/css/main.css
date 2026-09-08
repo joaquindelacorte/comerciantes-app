@@ -3,19 +3,168 @@
 
 :root {
   --primary: #2563eb;
-  --bg: #f8fafc;
+  --primary-dark: #1d4ed8;
+  --bg: #f1f5f9;
   --surface: #ffffff;
   --text: #1e293b;
   --muted: #64748b;
-  --radius: 8px;
-  --shadow: 0 1px 3px rgba(0,0,0,.1);
+  --danger: #ef4444;
+  --radius: 10px;
+  --shadow: 0 4px 16px rgba(0,0,0,.1);
 }
 
 body {
-  font-family: system-ui, sans-serif;
+  font-family: system-ui, -apple-system, sans-serif;
   background: var(--bg);
   color: var(--text);
   min-height: 100vh;
 }
 
-#app { max-width: 1200px; margin: 0 auto; padding: 1rem; }
+/* ── LOGIN ─────────────────────────────── */
+.login-wrap {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.login-card {
+  background: var(--surface);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 2rem;
+  width: 100%;
+  max-width: 360px;
+}
+
+.login-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--primary);
+  margin-bottom: .25rem;
+}
+
+.login-sub {
+  color: var(--muted);
+  margin-bottom: 1.5rem;
+  font-size: .9rem;
+}
+
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.form-group label {
+  display: block;
+  font-size: .85rem;
+  font-weight: 600;
+  margin-bottom: .35rem;
+  color: var(--muted);
+}
+
+.form-group select,
+.form-group input {
+  width: 100%;
+  padding: .6rem .75rem;
+  border: 1.5px solid #cbd5e1;
+  border-radius: 6px;
+  font-size: 1rem;
+  outline: none;
+  transition: border-color .2s;
+}
+
+.form-group select:focus,
+.form-group input:focus {
+  border-color: var(--primary);
+}
+
+.btn-primary {
+  width: 100%;
+  padding: .7rem;
+  background: var(--primary);
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: .5rem;
+  transition: background .2s;
+}
+
+.btn-primary:hover { background: var(--primary-dark); }
+
+.btn-ghost {
+  background: transparent;
+  border: 1.5px solid #cbd5e1;
+  border-radius: 6px;
+  padding: .4rem .8rem;
+  cursor: pointer;
+  font-size: .85rem;
+  color: var(--muted);
+}
+
+.error-msg {
+  margin-top: .75rem;
+  color: var(--danger);
+  font-size: .85rem;
+  text-align: center;
+}
+
+.hidden { display: none !important; }
+
+/* ── DASHBOARD ─────────────────────────── */
+.dashboard { min-height: 100vh; display: flex; flex-direction: column; }
+
+.dash-header {
+  background: var(--surface);
+  padding: .85rem 1.25rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #e2e8f0;
+  box-shadow: 0 1px 4px rgba(0,0,0,.06);
+}
+
+.dash-header h2 { font-size: 1.1rem; font-weight: 700; }
+
+.dash-nav {
+  display: flex;
+  gap: .5rem;
+  padding: .75rem 1rem;
+  background: var(--surface);
+  border-bottom: 1px solid #e2e8f0;
+  overflow-x: auto;
+}
+
+.nav-btn {
+  white-space: nowrap;
+  padding: .45rem .9rem;
+  border: 1.5px solid #cbd5e1;
+  border-radius: 20px;
+  background: transparent;
+  cursor: pointer;
+  font-size: .85rem;
+  color: var(--muted);
+  transition: all .15s;
+}
+
+.nav-btn.active,
+.nav-btn:hover {
+  background: var(--primary);
+  color: #fff;
+  border-color: var(--primary);
+}
+
+.dash-content {
+  padding: 1.5rem 1.25rem;
+  flex: 1;
+}
+
+.placeholder-msg {
+  color: var(--muted);
+  font-size: .95rem;
+  margin-top: 2rem;
+  text-align: center;
+}
