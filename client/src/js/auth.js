@@ -1,4 +1,6 @@
 // auth.js — pantalla de login por PIN
+import { renderAdmin } from './admin.js';
+
 export async function renderLogin() {
   const app = document.getElementById('app');
 
@@ -31,10 +33,13 @@ export async function renderLogin() {
         </div>
 
         <button id="btn-login" class="btn-primary">Entrar</button>
-        <p id="login-error" class="error-msg hidden">PIN incorrecto</p>
+        <p id="login-error" class="error-msg hidden"></p>
+        <button id="btn-admin" class="btn-link">⚙️ Panel de administración</button>
       </div>
     </div>
   `;
+
+  document.getElementById('btn-admin').addEventListener('click', renderAdmin);
 
   document.getElementById('btn-login').addEventListener('click', async () => {
     const clienteId = document.getElementById('negocio').value;

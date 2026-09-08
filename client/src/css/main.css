@@ -168,3 +168,83 @@ body {
   margin-top: 2rem;
   text-align: center;
 }
+
+/* ── BOTÓN LINK ────────────────────────────────────────────── */
+.btn-link {
+  display: block;
+  width: 100%;
+  margin-top: 1rem;
+  background: none;
+  border: none;
+  color: var(--muted);
+  font-size: .8rem;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: underline;
+  padding: .25rem;
+}
+.btn-link:hover { color: var(--primary); }
+
+/* ── ADMIN PANEL ───────────────────────────────────────────── */
+.admin-toolbar { margin-bottom: 1rem; }
+
+.admin-form {
+  background: var(--surface);
+  border: 1.5px solid #e2e8f0;
+  border-radius: var(--radius);
+  padding: 1.25rem;
+  margin-bottom: 1.25rem;
+}
+.admin-form h3 { font-size: 1rem; margin-bottom: 1rem; }
+
+.form-row {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+.form-row .form-group { flex: 1; min-width: 180px; }
+
+.form-actions {
+  display: flex;
+  gap: .75rem;
+  margin-top: 1rem;
+  align-items: center;
+}
+
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--surface);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+}
+.admin-table th {
+  background: #f1f5f9;
+  padding: .65rem 1rem;
+  text-align: left;
+  font-size: .8rem;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: .05em;
+}
+.admin-table td {
+  padding: .75rem 1rem;
+  border-top: 1px solid #f1f5f9;
+  font-size: .9rem;
+}
+.admin-table tr:hover td { background: #f8fafc; }
+
+.td-actions { display: flex; gap: .5rem; }
+
+.btn-del {
+  background: #fee2e2;
+  color: #dc2626;
+  border: none;
+  border-radius: 6px;
+  padding: .35rem .7rem;
+  font-size: .8rem;
+  cursor: pointer;
+}
+.btn-del:hover { background: #fecaca; }
+

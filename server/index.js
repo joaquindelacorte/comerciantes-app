@@ -11,6 +11,7 @@ app.use(express.json());
 
 // Rutas API
 app.use('/api/auth',       require('./routes/auth'));
+app.use('/api/admin',      require('./routes/admin'));
 app.use('/api/productos',  require('./routes/productos'));
 app.use('/api/stock',      require('./routes/stock'));
 app.use('/api/tesoreria',  require('./routes/tesoreria'));
