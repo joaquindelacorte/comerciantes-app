@@ -19,22 +19,17 @@ fi
 echo "==> Arrancando PostgreSQL..."
 su postgres -c "$PG_BIN/pg_ctl start -D $PGDATA -l /tmp/pg.log -w -t 30"
 
-# ── 3. Crear user/DB y aplicar schema (idempotente) ──────────
-echo "==> Configurando base de datos..."
-su postgres -c "psql -U postgres -tc \
-  \"SELECT 1 FROM pg_roles WHERE rolname='comerciantes'\" \
-  | grep -q 1 || psql -U postgres -c \
-  \"CREATE USER comerciantes WITH PASSWORD 'comerciantes';\""
+# ── 3. Setup: SIEMPRE conectar a 'postgres' (existe siempre) ──
+#    Los || true evitan fallo si user/DB ya existen en reinicios
+echo "==> Configurando usuario y base de datos..."
+su postgres -c "psql -U postgres -d postgres -c \"CREATE USER comerciantes WITH PASSWORD 'comerciantes';\"" 2>/dev/null || true
+su postgres -c "psql -U postgres -d postgres -c \"CREATE DATABASE comerciantes OWNER comerciantes;\"" 2>/dev/null || true
 
-su postgres -c "psql -U postgres -tc \
-  \"SELECT 1 FROM pg_database WHERE datname='comerciantes'\" \
-  | grep -q 1 || psql -U postgres -c \
-  \"CREATE DATABASE comerciantes OWNER comerciantes;\""
-
+# ── 4. Aplicar schema (IF NOT EXISTS => idempotente) ─────────
 echo "==> Aplicando schema..."
-su postgres -c "psql -U comerciantes -d comerciantes -f /app/schema.sql"
+su postgres -c "psql -U postgres -d comerciantes -f /app/schema.sql"
 echo "==> Schema OK"
 
-# ── 4. Arrancar Node en primer plano ─────────────────────────
+# ── 5. Node en primer plano ───────────────────────────────────
 echo "==> Iniciando app en puerto $PORT..."
 exec node /app/server/index.js
