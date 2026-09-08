@@ -4,7 +4,6 @@ FROM node:20-slim AS builder
 WORKDIR /app
 COPY package*.json ./
 RUN npm ci
-
 COPY client/ ./client/
 COPY vite.config.js ./
 RUN node -e "\
@@ -15,41 +14,33 @@ RUN node -e "\
 # ── Stage 2: Imagen final con Node + PostgreSQL ────────────────
 FROM debian:bookworm-slim
 
-# Instalar Node 20, PostgreSQL 16 y supervisord
+# Instalar PostgreSQL y Node.js
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    curl gnupg ca-certificates supervisor \
-    postgresql postgresql-client \
+    curl gnupg ca-certificates postgresql \
   && curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
   && apt-get install -y --no-install-recommends nodejs \
   && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# ── App ────────────────────────────────────────────────────────
+# Detectar version de postgres instalada y guardarla
+RUN ls /usr/lib/postgresql > /PG_VERSION
+
 WORKDIR /app
 COPY package*.json ./
 RUN npm ci --omit=dev
-
 COPY server/ ./server/
 COPY schema.sql ./schema.sql
 COPY --from=builder /app/public ./public
+COPY start.sh ./start.sh
+RUN chmod +x ./start.sh
 
-# ── Configuración de PostgreSQL ────────────────────────────────
 ENV PGDATA=/var/lib/postgresql/data
 ENV PGUSER=comerciantes
 ENV PGPASSWORD=comerciantes
 ENV PGDATABASE=comerciantes
-
-# DATABASE_URL que usa la app Node (apunta al postgres local)
-ENV DATABASE_URL=postgresql://comerciantes:comerciantes@localhost:5432/comerciantes
+ENV DATABASE_URL=postgresql://comerciantes:comerciantes@127.0.0.1:5432/comerciantes
 ENV NODE_ENV=production
 ENV PORT=3000
 
-# ── Supervisord: gestiona Postgres + Node juntos ───────────────
-COPY supervisord.conf /etc/supervisor/conf.d/app.conf
-
-# ── Entrypoint: inicia DB si es la primera vez ─────────────────
-COPY docker-init.sh /docker-init.sh
-RUN chmod +x /docker-init.sh
-
 EXPOSE 3000
 
-ENTRYPOINT ["/docker-init.sh"]
+CMD ["/app/start.sh"]
