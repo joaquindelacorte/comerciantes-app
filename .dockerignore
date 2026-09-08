@@ -4,3 +4,5 @@ public
 .env.local
 *.local
 .git
+docker-compose.yml
+entrypoint.sh
