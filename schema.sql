@@ -1,26 +1,27 @@
--- schema.sql — ejecutar en Railway PostgreSQL
+-- schema.sql — se ejecuta automáticamente al arrancar el contenedor
+-- Usa IF NOT EXISTS para que sea idempotente (se puede correr más de una vez sin romper nada)
 
-CREATE TABLE clientes (
+CREATE TABLE IF NOT EXISTS clientes (
   id        SERIAL PRIMARY KEY,
   nombre    TEXT NOT NULL,
   pin       TEXT NOT NULL
 );
 
-CREATE TABLE categorias (
+CREATE TABLE IF NOT EXISTS categorias (
   id         SERIAL PRIMARY KEY,
   cliente_id INT REFERENCES clientes(id) ON DELETE CASCADE,
   nombre     TEXT NOT NULL,
   grupo      TEXT CHECK (grupo IN ('COGS','FIJO','VARIABLE','FINANCIERO','IMPUESTOS'))
 );
 
-CREATE TABLE terceros (
+CREATE TABLE IF NOT EXISTS terceros (
   id         SERIAL PRIMARY KEY,
   cliente_id INT REFERENCES clientes(id) ON DELETE CASCADE,
   nombre     TEXT NOT NULL,
   tipo       TEXT CHECK (tipo IN ('cliente','proveedor'))
 );
 
-CREATE TABLE productos (
+CREATE TABLE IF NOT EXISTS productos (
   id           SERIAL PRIMARY KEY,
   cliente_id   INT REFERENCES clientes(id) ON DELETE CASCADE,
   nombre       TEXT NOT NULL,
@@ -31,7 +32,7 @@ CREATE TABLE productos (
   categoria_id INT REFERENCES categorias(id)
 );
 
-CREATE TABLE stock_movimientos (
+CREATE TABLE IF NOT EXISTS stock_movimientos (
   id          SERIAL PRIMARY KEY,
   producto_id INT REFERENCES productos(id) ON DELETE CASCADE,
   tipo        TEXT CHECK (tipo IN ('entrada','salida')),
@@ -40,7 +41,7 @@ CREATE TABLE stock_movimientos (
   fecha       TIMESTAMPTZ DEFAULT now()
 );
 
-CREATE TABLE insumos (
+CREATE TABLE IF NOT EXISTS insumos (
   id         SERIAL PRIMARY KEY,
   cliente_id INT REFERENCES clientes(id) ON DELETE CASCADE,
   nombre     TEXT NOT NULL,
@@ -48,21 +49,21 @@ CREATE TABLE insumos (
   costo      NUMERIC(12,4) DEFAULT 0
 );
 
-CREATE TABLE formulas (
+CREATE TABLE IF NOT EXISTS formulas (
   id          SERIAL PRIMARY KEY,
   cliente_id  INT REFERENCES clientes(id) ON DELETE CASCADE,
   nombre      TEXT NOT NULL,
   rendimiento NUMERIC(12,3) DEFAULT 1
 );
 
-CREATE TABLE formula_items (
+CREATE TABLE IF NOT EXISTS formula_items (
   id         SERIAL PRIMARY KEY,
   formula_id INT REFERENCES formulas(id) ON DELETE CASCADE,
   insumo_id  INT REFERENCES insumos(id),
   cantidad   NUMERIC(12,4) NOT NULL
 );
 
-CREATE TABLE transacciones (
+CREATE TABLE IF NOT EXISTS transacciones (
   id           SERIAL PRIMARY KEY,
   cliente_id   INT REFERENCES clientes(id) ON DELETE CASCADE,
   tipo         TEXT CHECK (tipo IN ('ingreso','gasto')),
@@ -72,7 +73,7 @@ CREATE TABLE transacciones (
   fecha        DATE DEFAULT CURRENT_DATE
 );
 
-CREATE TABLE cuentas_corrientes (
+CREATE TABLE IF NOT EXISTS cuentas_corrientes (
   id          SERIAL PRIMARY KEY,
   cliente_id  INT REFERENCES clientes(id) ON DELETE CASCADE,
   tercero_id  INT REFERENCES terceros(id),
@@ -82,3 +83,8 @@ CREATE TABLE cuentas_corrientes (
   descripcion TEXT,
   fecha       DATE DEFAULT CURRENT_DATE
 );
+
+-- Cliente demo para pruebas (PIN: 1234)
+INSERT INTO clientes (nombre, pin)
+SELECT 'Almacén Demo', '1234'
+WHERE NOT EXISTS (SELECT 1 FROM clientes WHERE nombre = 'Almacén Demo');
