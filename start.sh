@@ -19,8 +19,7 @@ fi
 echo "==> Arrancando PostgreSQL..."
 su postgres -c "$PG_BIN/pg_ctl start -D $PGDATA -l /tmp/pg.log -w -t 30"
 
-# ── 3. Setup: SIEMPRE conectar a 'postgres' (existe siempre) ──
-#    Los || true evitan fallo si user/DB ya existen en reinicios
+# ── 3. Crear user/DB si no existen (siempre conectar a 'postgres') ──
 echo "==> Configurando usuario y base de datos..."
 su postgres -c "psql -U postgres -d postgres -c \"CREATE USER comerciantes WITH PASSWORD 'comerciantes';\"" 2>/dev/null || true
 su postgres -c "psql -U postgres -d postgres -c \"CREATE DATABASE comerciantes OWNER comerciantes;\"" 2>/dev/null || true
@@ -30,7 +29,14 @@ echo "==> Aplicando schema..."
 su postgres -c "psql -U postgres -d comerciantes -f /app/schema.sql"
 echo "==> Schema OK"
 
-# ── 5. Insertar cliente demo si no existe ─────────────────────
+# ── 5. SIEMPRE aplicar GRANTs (cubre reinicios con datos existentes) ──
+echo "==> Aplicando permisos..."
+su postgres -c "psql -U postgres -d comerciantes -c \
+  \"GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO comerciantes; \
+    GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public TO comerciantes;\""
+echo "==> Permisos OK"
+
+# ── 6. Insertar cliente demo si no existe ─────────────────────
 echo "==> Cargando datos demo..."
 su postgres -c "psql -U postgres -d comerciantes -c \
   \"INSERT INTO clientes (nombre, pin) \
@@ -38,6 +44,6 @@ su postgres -c "psql -U postgres -d comerciantes -c \
     WHERE NOT EXISTS (SELECT 1 FROM clientes WHERE nombre = 'Almacen Demo');\"" || true
 echo "==> Demo listo: negocio='Almacen Demo' PIN=1234"
 
-# ── 6. Node en primer plano ───────────────────────────────────
+# ── 7. Node en primer plano ───────────────────────────────────
 echo "==> Iniciando app en puerto $PORT..."
 exec node /app/server/index.js
