@@ -84,7 +84,8 @@ CREATE TABLE IF NOT EXISTS cuentas_corrientes (
   fecha       DATE DEFAULT CURRENT_DATE
 );
 
--- Cliente demo para pruebas (PIN: 1234)
-INSERT INTO clientes (nombre, pin)
-SELECT 'Almacén Demo', '1234'
-WHERE NOT EXISTS (SELECT 1 FROM clientes WHERE nombre = 'Almacén Demo');
+-- Permisos al usuario de la app
+GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO comerciantes;
+GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public TO comerciantes;
+ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON TABLES TO comerciantes;
+ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON SEQUENCES TO comerciantes;
