@@ -407,3 +407,22 @@ select {
   transition: border-color .2s;
 }
 select:focus { border-color: var(--primary); }
+
+/* ── CONFIG ───────────────────────────────────────────────── */
+.nav-btn-config { margin-left: auto; }
+
+.cfg-section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+  gap: .5rem;
+}
+.cfg-hint { font-size: .82rem; color: var(--muted); }
+
+.badge-grupo {
+  background: #ede9fe;
+  color: #7c3aed;
+  font-size: .72rem;
+}

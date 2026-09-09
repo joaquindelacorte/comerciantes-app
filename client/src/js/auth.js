@@ -5,13 +5,15 @@ import { renderProductos } from './productos.js';
 import { renderStock } from './stock.js';
 import { renderTesoreria } from './tesoreria.js';
 import { renderManufactura } from './manufactura.js';
+import { renderConfiguracion } from './configuracion.js';
 
 const MODULOS = {
-  resultados: renderResultados,
-  productos:  renderProductos,
-  stock:      renderStock,
-  tesoreria:  renderTesoreria,
-  manufactura: renderManufactura,
+  resultados:    renderResultados,
+  productos:     renderProductos,
+  stock:         renderStock,
+  tesoreria:     renderTesoreria,
+  manufactura:   renderManufactura,
+  configuracion: renderConfiguracion,
 };
 
 export async function renderLogin() {
@@ -97,6 +99,7 @@ function renderDashboard(cliente) {
         <button class="nav-btn" data-modulo="stock">🏪 Stock</button>
         <button class="nav-btn" data-modulo="tesoreria">💰 Tesorería</button>
         <button class="nav-btn" data-modulo="manufactura">🔧 Manufactura</button>
+        <button class="nav-btn nav-btn-config" data-modulo="configuracion">⚙️ Config</button>
       </nav>
       <main id="contenido" class="dash-content">
         <p class="placeholder-msg">Seleccioná un módulo</p>

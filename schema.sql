@@ -84,6 +84,15 @@ CREATE TABLE IF NOT EXISTS cuentas_corrientes (
   fecha       DATE DEFAULT CURRENT_DATE
 );
 
+CREATE TABLE IF NOT EXISTS medios_pago (
+  id         SERIAL PRIMARY KEY,
+  cliente_id INT REFERENCES clientes(id) ON DELETE CASCADE,
+  nombre     TEXT NOT NULL,
+  tipo       TEXT CHECK (tipo IN ('efectivo','tarjeta_debito','tarjeta_credito','transferencia','billetera_digital','otro')) DEFAULT 'otro',
+  comision   NUMERIC(5,2) DEFAULT 0,
+  activo     BOOLEAN DEFAULT true
+);
+
 -- Permisos al usuario de la app
 GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO comerciantes;
 GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public TO comerciantes;
