@@ -10,12 +10,15 @@ app.use(cors());
 app.use(express.json());
 
 // Rutas API
-app.use('/api/auth',       require('./routes/auth'));
-app.use('/api/admin',      require('./routes/admin'));
-app.use('/api/productos',  require('./routes/productos'));
-app.use('/api/stock',      require('./routes/stock'));
-app.use('/api/tesoreria',  require('./routes/tesoreria'));
-app.use('/api/manufactura',require('./routes/manufactura'));
+app.use('/api/auth',        require('./routes/auth'));
+app.use('/api/admin',       require('./routes/admin'));
+app.use('/api/categorias',  require('./routes/categorias'));
+app.use('/api/terceros',    require('./routes/terceros'));
+app.use('/api/insumos',     require('./routes/insumos'));
+app.use('/api/productos',   require('./routes/productos'));
+app.use('/api/stock',       require('./routes/stock'));
+app.use('/api/tesoreria',   require('./routes/tesoreria'));
+app.use('/api/manufactura', require('./routes/manufactura'));
 
 // En producción: servir el build de Vite
 if (process.env.NODE_ENV === 'production') {

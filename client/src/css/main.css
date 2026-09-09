@@ -248,3 +248,162 @@ body {
 }
 .btn-del:hover { background: #fecaca; }
 
+
+/* ── MÓDULOS ──────────────────────────────────────────────── */
+.loading { color: #94a3b8; padding: 2rem; text-align: center; }
+
+.modulo-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+  gap: .5rem;
+}
+.modulo-header h3 { font-size: 1.1rem; font-weight: 700; }
+
+.toolbar { display: flex; gap: .5rem; align-items: center; flex-wrap: wrap; }
+
+.btn-group { display: flex; }
+.btn-tab {
+  padding: .35rem .8rem;
+  border: 1.5px solid #cbd5e1;
+  background: transparent;
+  cursor: pointer;
+  font-size: .82rem;
+  color: var(--muted);
+}
+.btn-tab:first-child { border-radius: 6px 0 0 6px; }
+.btn-tab:last-child  { border-radius: 0 6px 6px 0; }
+.btn-tab:not(:first-child) { border-left: none; }
+.btn-tab.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+
+.btn-primary.sm, .btn-ghost.sm {
+  padding: .35rem .75rem;
+  font-size: .82rem;
+}
+
+/* ── TABLA DATOS ──────────────────────────────────────────── */
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--surface);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  font-size: .88rem;
+}
+.data-table th {
+  background: #f1f5f9;
+  padding: .55rem .9rem;
+  text-align: left;
+  font-size: .78rem;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: .04em;
+}
+.data-table td {
+  padding: .65rem .9rem;
+  border-top: 1px solid #f1f5f9;
+}
+.data-table tr:hover td { background: #f8fafc; }
+.data-table .num { text-align: right; font-variant-numeric: tabular-nums; }
+.data-table .empty { text-align: center; color: #94a3b8; padding: 1.5rem; }
+
+.row-section td { background: #f8fafc; font-size: .78rem; color: var(--muted); font-weight: 600; letter-spacing:.05em; text-transform:uppercase; }
+.row-total td { background: #f1f5f9; font-weight: 700; }
+.row-total.pos td { color: #16a34a; }
+.row-total.neg td { color: #dc2626; }
+
+/* ── P&L CARDS ───────────────────────────────────────────── */
+.pl-cards { display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: .5rem; }
+.pl-card {
+  flex: 1;
+  min-width: 140px;
+  background: var(--surface);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 1rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: .25rem;
+}
+.pl-label { font-size: .78rem; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; }
+.pl-valor { font-size: 1.3rem; font-weight: 700; }
+.pl-card.ingreso .pl-valor { color: #16a34a; }
+.pl-card.gasto   .pl-valor { color: #dc2626; }
+.pl-card.resultado.pos .pl-valor { color: #16a34a; }
+.pl-card.resultado.neg .pl-valor { color: #dc2626; }
+.pl-card.neg .pl-valor { color: #dc2626; }
+
+.pl-detalle { margin-top: 1.25rem; }
+.pl-detalle h4 { font-size: .9rem; margin-bottom: .5rem; color: var(--muted); }
+
+/* ── BADGES ──────────────────────────────────────────────── */
+.badge {
+  display: inline-block;
+  padding: .18rem .55rem;
+  border-radius: 20px;
+  font-size: .75rem;
+  font-weight: 600;
+}
+.badge.ingreso  { background: #dcfce7; color: #16a34a; }
+.badge.gasto    { background: #fee2e2; color: #dc2626; }
+.badge.entrada  { background: #dcfce7; color: #16a34a; }
+.badge.salida   { background: #fee2e2; color: #dc2626; }
+.badge.estado-pendiente  { background: #fef9c3; color: #ca8a04; }
+.badge.estado-parcial    { background: #dbeafe; color: #2563eb; }
+.badge.estado-pagada     { background: #dcfce7; color: #16a34a; }
+.badge.estado-vencida    { background: #fee2e2; color: #dc2626; }
+
+/* colores en celdas */
+.pos { color: #16a34a; }
+.neg { color: #dc2626; }
+.alerta { color: #dc2626; font-weight: 600; }
+
+/* ── ALERTAS ─────────────────────────────────────────────── */
+.alerta-box {
+  background: #fef9c3;
+  border: 1px solid #fde047;
+  border-radius: var(--radius);
+  padding: .75rem 1rem;
+  margin-bottom: 1rem;
+  font-size: .88rem;
+}
+
+/* ── MARGEN PREVIEW ──────────────────────────────────────── */
+.margen-preview {
+  font-size: .85rem;
+  margin: .25rem 0 .5rem;
+  font-weight: 600;
+}
+
+/* ── FORMULA CARD ────────────────────────────────────────── */
+.formula-card {
+  background: var(--surface);
+  border: 1px solid #e2e8f0;
+  border-radius: var(--radius);
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+.formula-header {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  flex-wrap: wrap;
+  margin-bottom: .5rem;
+}
+.formula-meta { color: var(--muted); font-size: .82rem; flex: 1; }
+
+/* ── SELECT ──────────────────────────────────────────────── */
+select {
+  width: 100%;
+  padding: .6rem .75rem;
+  border: 1.5px solid #cbd5e1;
+  border-radius: 6px;
+  font-size: 1rem;
+  outline: none;
+  background: white;
+  transition: border-color .2s;
+}
+select:focus { border-color: var(--primary); }

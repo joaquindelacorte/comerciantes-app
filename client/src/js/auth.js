@@ -1,5 +1,18 @@
 // auth.js — pantalla de login por PIN
 import { renderAdmin } from './admin.js';
+import { renderResultados } from './resultados.js';
+import { renderProductos } from './productos.js';
+import { renderStock } from './stock.js';
+import { renderTesoreria } from './tesoreria.js';
+import { renderManufactura } from './manufactura.js';
+
+const MODULOS = {
+  resultados: renderResultados,
+  productos:  renderProductos,
+  stock:      renderStock,
+  tesoreria:  renderTesoreria,
+  manufactura: renderManufactura,
+};
 
 export async function renderLogin() {
   const app = document.getElementById('app');
@@ -97,11 +110,14 @@ function renderDashboard(cliente) {
   });
 
   document.querySelectorAll('.nav-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
+    btn.addEventListener('click', async () => {
       document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
-      document.getElementById('contenido').innerHTML =
-        `<p class="placeholder-msg">Módulo <strong>${btn.dataset.modulo}</strong> — en construcción</p>`;
+      const contenido = document.getElementById('contenido');
+      contenido.innerHTML = `<p class="loading">Cargando...</p>`;
+      const fn = MODULOS[btn.dataset.modulo];
+      if (fn) await fn(contenido);
+      else contenido.innerHTML = `<p class="placeholder-msg">Módulo <strong>${btn.dataset.modulo}</strong> — en construcción</p>`;
     });
   });
 }

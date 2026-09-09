@@ -58,4 +58,14 @@ router.post('/formulas', async (req, res) => {
   }
 });
 
+// DELETE /api/manufactura/formulas/:id
+router.delete('/formulas/:id', async (req, res) => {
+  try {
+    await pool.query('DELETE FROM formulas WHERE id=$1', [req.params.id]);
+    res.json({ ok: true });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 module.exports = router;
